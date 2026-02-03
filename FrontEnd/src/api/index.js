@@ -1,13 +1,53 @@
 const API_BASE = 'http://localhost:8000/api/v1'
 
+// Token 管理
+export const tokenManager = {
+  getToken() {
+    return localStorage.getItem('token')
+  },
+
+  setToken(token, expiresIn) {
+    localStorage.setItem('token', token)
+    localStorage.setItem('token_expires_in', expiresIn)
+  },
+
+  removeToken() {
+    localStorage.removeItem('token')
+    localStorage.removeItem('token_expires_in')
+  },
+
+  getUser() {
+    const user = localStorage.getItem('user')
+    return user ? JSON.parse(user) : null
+  },
+
+  setUser(user) {
+    localStorage.setItem('user', JSON.stringify(user))
+  },
+
+  isLoggedIn() {
+    const token = this.getToken()
+    return !!token
+  }
+}
+
 async function request(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`
+
+  // 获取 token 并添加到请求头
+  const token = tokenManager.getToken()
   const config = {
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': token ? `Bearer ${token}` : '',
       ...options.headers
     },
     ...options
+  }
+
+  // 移除空的 Authorization header
+  if (!config.headers['Authorization']) {
+    delete config.headers['Authorization']
   }
 
   try {
@@ -90,8 +130,77 @@ export const skillAPI = {
   }
 }
 
+export const recruitmentAPI = {
+  // 获取招募列表
+  getList(params = {}) {
+    const queryParams = new URLSearchParams()
+    if (params.page) queryParams.set('page', params.page)
+    if (params.pageSize) queryParams.set('pageSize', params.pageSize)
+    if (params.status) queryParams.set('status', params.status)
+    if (params.competition_name) queryParams.set('competition_name', params.competition_name)
+    return request(`/recruitments?${queryParams.toString()}`)
+  },
+
+  // 获取招募详情
+  getDetail(id) {
+    return request(`/recruitments/${id}`)
+  },
+
+  // 发布招募
+  publish(data) {
+    return request('/recruitments/publish', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+  },
+
+  // 保存草稿
+  createDraft(data) {
+    return request('/recruitments/draft', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+  },
+
+  // 更新招募
+  update(id, data) {
+    return request(`/recruitments/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    })
+  },
+
+  // 发布草稿
+  publishDraft(id) {
+    return request(`/recruitments/${id}/publish`, {
+      method: 'POST'
+    })
+  },
+
+  // 关闭招募
+  close(id) {
+    return request(`/recruitments/${id}/close`, {
+      method: 'POST'
+    })
+  },
+
+  // 删除招募
+  delete(id) {
+    return request(`/recruitments/${id}`, {
+      method: 'DELETE'
+    })
+  },
+
+  // 获取我的招募列表
+  getMyList(status = null) {
+    const url = status ? `/recruitments/my/list?status=${status}` : '/recruitments/my/list'
+    return request(url)
+  }
+}
+
 export default {
   auth: authAPI,
   user: userAPI,
-  skill: skillAPI
+  skill: skillAPI,
+  recruitment: recruitmentAPI
 }

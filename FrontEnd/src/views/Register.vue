@@ -1,42 +1,42 @@
 <template>
-  <div class="min-h-screen cyber-bg flex items-center justify-center p-4">
+  <div class="min-h-screen flex items-center justify-center p-4" :class="{ 'dark': isDark }">
     <!-- 背景装饰 -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-cyber-secondary/20 rounded-full blur-3xl animate-float"></div>
-      <div class="absolute bottom-1/4 left-1/4 w-96 h-96 bg-cyber-accent/20 rounded-full blur-3xl animate-float" style="animation-delay: 1s;"></div>
+    <div class="absolute inset-0 bg-light overflow-hidden pointer-events-none">
+      <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-cyber-secondary/10 rounded-full blur-3xl animate-float"></div>
+      <div class="absolute bottom-1/4 left-1/4 w-96 h-96 bg-cyber-accent/10 rounded-full blur-3xl animate-float" style="animation-delay: 1s;"></div>
     </div>
 
     <!-- 注册卡片 -->
-    <div class="glass-card w-full max-w-lg p-8 relative animate-slide-up">
+    <div class="sharp-card w-full max-w-lg p-8 relative">
       <!-- Logo区域 -->
       <div class="text-center mb-6">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-cyber-primary/10 border border-cyber-primary/30 mb-3">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-cyber-primary/10 border border-cyber-primary/30 mb-3">
           <svg class="w-8 h-8 text-cyber-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
           </svg>
         </div>
-        <h1 class="text-2xl font-bold text-gradient">加入 TeaMAKE</h1>
-        <p class="text-gray-400 text-sm mt-1">创建你的竞赛组队账号</p>
+        <h1 class="text-2xl font-bold text-cyber-dark dark:text-white">加入 TeaMAKE</h1>
+        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">创建你的竞赛组队账号</p>
       </div>
 
       <!-- 步骤指示器 -->
       <div class="flex items-center justify-center gap-2 mb-6">
-        <div :class="['w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all', step >= 1 ? 'bg-cyber-primary text-cyber-dark' : 'bg-white/10 text-gray-500']">1</div>
-        <div class="w-12 h-0.5 bg-white/10">
+        <div :class="['w-8 h-8 flex items-center justify-center text-sm font-medium transition-all border', step >= 1 ? 'bg-cyber-primary text-white border-cyber-primary' : 'bg-white dark:bg-cyber-dark border-light-border dark:border-dark-border text-gray-400 dark:text-gray-500']">1</div>
+        <div class="w-12 h-0.5 bg-light-border dark:bg-dark-border">
           <div :class="['h-full bg-cyber-primary transition-all', step >= 2 ? 'w-full' : 'w-0']"></div>
         </div>
-        <div :class="['w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all', step >= 2 ? 'bg-cyber-primary text-cyber-dark' : 'bg-white/10 text-gray-500']">2</div>
+        <div :class="['w-8 h-8 flex items-center justify-center text-sm font-medium transition-all border', step >= 2 ? 'bg-cyber-primary text-white border-cyber-primary' : 'bg-white dark:bg-cyber-dark border-light-border dark:border-dark-border text-gray-400 dark:text-gray-500']">2</div>
       </div>
 
       <!-- 步骤1：基本信息 -->
       <form v-show="step === 1" @submit.prevent="nextStep" class="space-y-4">
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2">用户名</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">用户名</label>
             <input
               v-model="form.username"
               type="text"
-              class="cyber-input"
+              class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
               placeholder="设置用户名"
               required
               minlength="3"
@@ -44,11 +44,11 @@
             />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-300 mb-2">QQ号</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">QQ号</label>
             <input
               v-model="form.QQ_num"
               type="number"
-              class="cyber-input"
+              class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
               placeholder="你的QQ号"
               required
             />
@@ -56,22 +56,22 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">邮箱</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">邮箱</label>
           <input
             v-model="form.email"
             type="email"
-            class="cyber-input"
+            class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
             placeholder="你的邮箱"
             required
           />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">密码</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">密码</label>
           <input
             v-model="form.password"
             type="password"
-            class="cyber-input"
+            class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
             placeholder="设置密码"
             required
             minlength="6"
@@ -79,17 +79,17 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-300 mb-2">学校</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">学校</label>
           <input
             v-model="form.college"
             type="text"
-            class="cyber-input"
+            class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
             placeholder="你的学校"
             required
           />
         </div>
 
-        <div v-if="error" class="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+        <div v-if="error" class="p-3 border bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-500 dark:text-red-400 text-sm">
           {{ error }}
         </div>
 
@@ -100,30 +100,30 @@
 
       <!-- 步骤2：确认信息 -->
       <form v-show="step === 2" @submit.prevent="handleRegister" class="space-y-4">
-        <div class="glass-card p-4 space-y-3">
+        <div class="sharp-card p-4 space-y-3">
           <div class="flex justify-between">
-            <span class="text-gray-400">用户名</span>
-            <span class="text-white font-medium">{{ form.username }}</span>
+            <span class="text-gray-500 dark:text-gray-400">用户名</span>
+            <span class="text-gray-900 dark:text-white font-medium">{{ form.username }}</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-400">QQ号</span>
-            <span class="text-white font-medium">{{ form.QQ_num }}</span>
+            <span class="text-gray-500 dark:text-gray-400">QQ号</span>
+            <span class="text-gray-900 dark:text-white font-medium">{{ form.QQ_num }}</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-400">邮箱</span>
-            <span class="text-white font-medium">{{ form.email }}</span>
+            <span class="text-gray-500 dark:text-gray-400">邮箱</span>
+            <span class="text-gray-900 dark:text-white font-medium">{{ form.email }}</span>
           </div>
           <div class="flex justify-between">
-            <span class="text-gray-400">学校</span>
-            <span class="text-white font-medium">{{ form.college }}</span>
+            <span class="text-gray-500 dark:text-gray-400">学校</span>
+            <span class="text-gray-900 dark:text-white font-medium">{{ form.college }}</span>
           </div>
         </div>
 
-        <div v-if="error" class="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+        <div v-if="error" class="p-3 border bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-500 dark:text-red-400 text-sm">
           {{ error }}
         </div>
 
-        <div v-if="success" class="p-3 rounded-lg bg-cyber-primary/10 border border-cyber-primary/30 text-cyber-primary text-sm">
+        <div v-if="success" class="p-3 border bg-cyber-primary/10 border-cyber-primary/20 text-cyber-primary text-sm">
           {{ success }}
         </div>
 
@@ -147,7 +147,7 @@
 
       <!-- 底部链接 -->
       <div class="mt-6 text-center">
-        <p class="text-gray-400">
+        <p class="text-gray-500 dark:text-gray-400">
           已有账号？
           <router-link to="/login" class="text-cyber-primary hover:text-cyber-secondary transition-colors">
             立即登录
@@ -159,11 +159,13 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { authAPI } from '../api'
 
 const router = useRouter()
+
+const isDark = ref(false)
 const step = ref(1)
 const loading = ref(false)
 const error = ref('')
@@ -177,8 +179,21 @@ const form = reactive({
   college: ''
 })
 
+function toggleTheme() {
+  isDark.value = !isDark.value
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+  updateTheme()
+}
+
+function updateTheme() {
+  if (isDark.value) {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
+}
+
 function nextStep() {
-  // 简单验证
   if (!form.username || !form.QQ_num || !form.email || !form.password || !form.college) {
     error.value = '请填写所有必填项'
     return
@@ -208,4 +223,12 @@ async function handleRegister() {
     loading.value = false
   }
 }
+
+onMounted(() => {
+  const savedTheme = localStorage.getItem('theme')
+  if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    isDark.value = true
+  }
+  updateTheme()
+})
 </script>

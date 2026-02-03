@@ -4,19 +4,37 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        // 科技感配色方案
+        // 科技感配色方案 - 锐利风格
         cyber: {
-          dark: '#0a0f1a',      // 深色背景
-          darker: '#060912',    // 更深背景
+          // 浅色模式
+          light: '#ffffff',
+          lighter: '#f8fafc',
+          lightGray: '#e2e8f0',
+          text: '#1e293b',
+          textSecondary: '#64748b',
+          border: '#e2e8f0',
+          borderDark: '#cbd5e1',
+
+          // 深色模式
+          dark: '#0f172a',
+          darker: '#020617',
+          darkGray: '#1e293b',
+
           primary: '#00d4ff',   // 青色主色
           secondary: '#00ff88', // 绿色次要
           accent: '#ff6b35',    // 橙色强调
-          glass: 'rgba(0, 212, 255, 0.1)', // 玻璃效果
-          glow: '#00d4ff',      // 发光色
         }
+      },
+      borderRadius: {
+        DEFAULT: '0px',
+        sm: '2px',
+        md: '4px',
+        lg: '6px',
+        xl: '8px',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -24,19 +42,14 @@ export default {
       },
       animation: {
         'glow': 'glow 2s ease-in-out infinite alternate',
-        'float': 'float 3s ease-in-out infinite',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'slide-down': 'slideDown 0.3s ease-out',
-        'fade-in': 'fadeIn 0.3s ease-out',
+        'slide-up': 'slideUp 0.2s ease-out',
+        'slide-down': 'slideDown 0.2s ease-out',
+        'fade-in': 'fadeIn 0.2s ease-out',
       },
       keyframes: {
         glow: {
           '0%': { boxShadow: '0 0 5px #00d4ff, 0 0 10px #00d4ff' },
           '100%': { boxShadow: '0 0 20px #00d4ff, 0 0 40px #00d4ff' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
         },
         slideUp: {
           '0%': { transform: 'translateY(10px)', opacity: '0' },
@@ -52,8 +65,8 @@ export default {
         },
       },
       backgroundImage: {
-        'cyber-grid': "linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px)",
-        'cyber-gradient': 'linear-gradient(135deg, #0a0f1a 0%, #0f1f2f 50%, #0a0f1a 100%)',
+        'cyber-grid-light': "linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.05) 1px, transparent 1px)",
+        'cyber-grid-dark': "linear-gradient(rgba(0, 212, 255, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px)",
       }
     },
   },

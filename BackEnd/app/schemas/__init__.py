@@ -8,6 +8,11 @@ from app.schemas.skill import (
     CategoryCreate, CategoryResponse, CategoryWithSkillsResponse,
     SkillCreate, SkillResponse, UserSkillResponse
 )
+from app.schemas.recruitment import (
+    RecruitmentCreate, RecruitmentDraft, RecruitmentResponse,
+    RecruitmentListResponse, RecruitmentUpdate,
+    RecruitmentMessageResponse
+)
 
 __all__ = [
     # User schemas
@@ -18,5 +23,9 @@ __all__ = [
     # Skill schemas
     "CategoryCreate", "CategoryResponse", "CategoryWithSkillsResponse",
     "SkillCreate", "SkillResponse",
-    "UserSkillAdd", "UserSkillResponse"
+    "UserSkillAdd", "UserSkillResponse",
+    # Recruitment schemas
+    "RecruitmentCreate", "RecruitmentDraft", "RecruitmentResponse",
+    "RecruitmentListResponse", "RecruitmentUpdate",
+    "RecruitmentMessageResponse"
 ]

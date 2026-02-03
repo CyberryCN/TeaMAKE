@@ -113,7 +113,9 @@ class LoginResponse(BaseModel):
     username: str
     email: str
     college: str
-    token: str  # 后续添加JWT后使用
+    token: str
+    token_type: str = "bearer"
+    expires_in: int  # 过期时间（秒）
 
 
 class MessageResponse(BaseModel):

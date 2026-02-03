@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.core.database import get_db
+from app.core.security import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES, get_current_user
+from app.models.user import User
 from app.services import user_services as us
 from app.schemas.user import (
     UserCreate, UserLogin, UserResponse, UserUpdate,
@@ -88,14 +90,22 @@ def login(data: UserLogin, db: Session = Depends(get_db)):
     )
     if not user:
         raise HTTPException(status_code=401, detail="用户名不存在或密码错误")
+
     # 更新最后登录时间
     us.update_last_login(db, user.id)
+
+    # 生成 JWT Token
+    token_data = {"sub": user.id, "username": user.username}
+    access_token = create_access_token(token_data)
+
     return {
         "id": user.id,
         "username": user.username,
         "email": user.email,
         "college": user.college,
-        "token": ""
+        "token": access_token,
+        "token_type": "bearer",
+        "expires_in": ACCESS_TOKEN_EXPIRE_MINUTES * 60
     }
 
 
@@ -129,3 +139,9 @@ def update_user_skills(user_id: int, data: UserSkillAdd, db: Session = Depends(g
         return {"msg": f"已更新 {len(skills)} 个技能", "user_id": user_id}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.get("/me", response_model=UserResponse)
+def get_current_user_info(current_user: User = Depends(get_current_user)):
+    """获取当前登录用户信息（需要登录）"""
+    return current_user
