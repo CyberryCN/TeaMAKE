@@ -45,3 +45,4 @@ class Recruitment(Base):
     required_skills = relationship("Skill", secondary=recruitment_skills)
     requests = relationship("TeamRequest", back_populates="recruitment", cascade="all, delete-orphan")
     team = relationship("Team", back_populates="recruitment", uselist=False)
+    applications = relationship("Application", back_populates="recruitment", cascade="all, delete-orphan")

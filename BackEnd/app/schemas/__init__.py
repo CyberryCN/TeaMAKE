@@ -13,6 +13,10 @@ from app.schemas.recruitment import (
     RecruitmentListResponse, RecruitmentUpdate,
     RecruitmentMessageResponse
 )
+from app.schemas.application import (
+    ApplicationResponse, ApplicationListResponse,
+    ApplicationMessageResponse, ApplicationCreate, ApplicationRespond
+)
 
 __all__ = [
     # User schemas
@@ -27,5 +31,8 @@ __all__ = [
     # Recruitment schemas
     "RecruitmentCreate", "RecruitmentDraft", "RecruitmentResponse",
     "RecruitmentListResponse", "RecruitmentUpdate",
-    "RecruitmentMessageResponse"
+    "RecruitmentMessageResponse",
+    # Application schemas
+    "ApplicationResponse", "ApplicationListResponse",
+    "ApplicationMessageResponse", "ApplicationCreate", "ApplicationRespond"
 ]

@@ -167,6 +167,30 @@
             </div>
           </div>
         </div>
+
+        <!-- 队伍成员 -->
+        <div v-if="recruitment.team && recruitment.team.members?.length" class="sharp-card p-6">
+          <h2 class="text-lg font-semibold text-cyber-dark dark:text-white mb-4 flex items-center gap-2">
+            <span class="w-1 h-5 bg-green-500"></span>
+            队伍成员 ({{ recruitment.team.members.length }}/{{ recruitment.required_number }})
+          </h2>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <router-link
+              v-for="member in recruitment.team.members"
+              :key="member.user_id"
+              :to="`/profile/${member.user_id}`"
+              class="flex flex-col items-center p-4 border border-light-border dark:border-dark-border hover:border-cyber-primary/50 transition-all"
+            >
+              <div class="w-14 h-14 bg-cyber-primary/10 border border-cyber-primary/30 flex items-center justify-center overflow-hidden rounded-full">
+                <span class="text-cyber-primary font-bold text-lg">{{ (member.username || '用户')?.charAt(0) }}</span>
+              </div>
+              <span class="mt-2 text-sm text-gray-700 dark:text-gray-300 truncate max-w-full">{{ member.username || '用户' + member.user_id }}</span>
+              <span :class="['text-xs px-2 py-0.5 mt-1 border', member.role === 'leader' ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-500 border-yellow-200 dark:border-yellow-800' : 'bg-gray-100 dark:bg-cyber-darkGray text-gray-500 border-gray-200 dark:border-gray-700']">
+                {{ member.role === 'leader' ? '队长' : '成员' }}
+              </span>
+            </router-link>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -183,7 +207,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { recruitmentAPI, tokenManager } from '../api'
+import { recruitmentAPI, applicationAPI, tokenManager } from '../api'
 
 const route = useRoute()
 const router = useRouter()
@@ -278,8 +302,15 @@ async function deleteRecruitment() {
   }
 }
 
-function applyRecruitment() {
-  alert('申请功能开发中...')
+async function applyRecruitment() {
+  if (!confirm('确定要申请加入这个团队吗？')) return
+
+  try {
+    await applicationAPI.send({ recruitment_id: recruitment.value.id })
+    alert('申请已发送！等待对方响应')
+  } catch (err) {
+    alert(err.message || '申请失败')
+  }
 }
 
 onMounted(() => {

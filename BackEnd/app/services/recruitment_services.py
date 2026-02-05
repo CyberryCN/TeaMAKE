@@ -4,7 +4,9 @@ from sqlalchemy.orm import Session
 
 from app.models.recruitment import Recruitment
 from app.models.skill import Skill
+from app.models.team import Team
 from app.models.enums import RecruitStatus
+from app.services import team_services as ts
 
 
 def get_recruitment_by_id(db: Session, recruitment_id: int) -> Optional[Recruitment]:
@@ -49,7 +51,7 @@ def post_recruitment(db: Session, user_id: int, title: str, description: str,
                      required_number: int, deadline: datetime,
                      expected_start: datetime, expected_end: datetime,
                      required_skills: List[int] = None) -> Recruitment:
-    """发布招募"""
+    """发布招募，同时创建队伍"""
     recruitment = Recruitment(
         creator_id=user_id,
         title=title,
@@ -57,7 +59,7 @@ def post_recruitment(db: Session, user_id: int, title: str, description: str,
         competition_name=competition_name,
         competition_url=competition_url,
         required_number=required_number,
-        current_number=0,
+        current_number=1,  # 创建者自己算一个人
         status=RecruitStatus.OPEN.value,
         deadline=deadline,
         expected_start=expected_start,
@@ -72,6 +74,11 @@ def post_recruitment(db: Session, user_id: int, title: str, description: str,
         recruitment.required_skills = skills
 
     db.add(recruitment)
+    db.flush()  # 获取 recruitment.id
+
+    # 创建队伍，创建者自动成为队长
+    ts.create_team_for_recruitment(db, recruitment, user_id)
+
     db.commit()
     db.refresh(recruitment)
     return recruitment
@@ -144,7 +151,7 @@ def update_recruitment(db: Session, recruitment_id: int, user_id: int,
 
 
 def publish_draft(db: Session, recruitment_id: int, user_id: int) -> Optional[Recruitment]:
-    """发布草稿"""
+    """发布草稿，同时创建队伍"""
     recruitment = get_recruitment_by_id(db, recruitment_id)
     if not recruitment:
         return None
@@ -162,7 +169,11 @@ def publish_draft(db: Session, recruitment_id: int, user_id: int) -> Optional[Re
         return None
 
     recruitment.status = RecruitStatus.OPEN.value
+    recruitment.current_number = 1  # 创建者算一个人
     recruitment.updated_at = datetime.now(timezone.utc)
+
+    # 创建队伍，创建者成为队长
+    ts.create_team_for_recruitment(db, recruitment, user_id)
 
     db.commit()
     db.refresh(recruitment)

@@ -13,6 +13,21 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
             </svg>
           </button>
+          <!-- 消息入口 -->
+          <router-link to="/messages" class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-cyber-primary transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+            </svg>
+            <span v-if="unreadCount > 0" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+              {{ unreadCount > 9 ? '9+' : unreadCount }}
+            </span>
+          </router-link>
+          <!-- 队伍入口 -->
+          <router-link to="/teams" class="p-2 text-gray-500 dark:text-gray-400 hover:text-cyber-primary transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </router-link>
           <router-link to="/create" class="btn-primary text-sm px-4 py-2 flex items-center gap-1">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -194,7 +209,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { recruitmentAPI, tokenManager } from '../api'
+import { recruitmentAPI, applicationAPI, tokenManager } from '../api'
 
 const router = useRouter()
 
@@ -207,6 +222,16 @@ const activeCategory = ref('')
 const page = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
+const unreadCount = ref(0)
+
+async function loadUnreadCount() {
+  try {
+    const result = await applicationAPI.getUnreadCount()
+    unreadCount.value = result.unread_count || 0
+  } catch (err) {
+    console.error('获取未读数量失败:', err)
+  }
+}
 
 function toggleTheme() {
   isDark.value = !isDark.value
@@ -304,6 +329,7 @@ onMounted(() => {
 
   currentUser.value = tokenManager.getUser()
   loadRecruitments()
+  loadUnreadCount()
 })
 </script>
 

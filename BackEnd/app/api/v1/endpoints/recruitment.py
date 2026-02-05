@@ -128,6 +128,18 @@ def get_recruitment_detail(
     if not recruitment:
         raise HTTPException(status_code=404, detail="招募不存在")
 
+    # 获取队伍成员
+    team_members = []
+    if recruitment.team:
+        for member in recruitment.team.members:
+            team_members.append({
+                "user_id": member.user.id,
+                "username": member.user.username,
+                "avatar_url": member.user.avatar_url,
+                "role": member.role,
+                "joined_at": member.joined_at
+            })
+
     return {
         "id": recruitment.id,
         "creator_id": recruitment.creator_id,
@@ -149,7 +161,12 @@ def get_recruitment_detail(
             "id": s.id,
             "name": s.name,
             "category_name": s.category.name if s.category else None
-        } for s in recruitment.required_skills]
+        } for s in recruitment.required_skills],
+        "team": {
+            "id": recruitment.team.id if recruitment.team else None,
+            "name": recruitment.team.name if recruitment.team else None,
+            "members": team_members
+        } if recruitment.team else None
     }
 
 

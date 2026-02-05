@@ -41,3 +41,5 @@ class User(Base):
     team_memberships = relationship("TeamMember", back_populates="user")
     conversations = relationship("Conversation", back_populates="user1", foreign_keys="Conversation.user1_id")
     conversations_as_user2 = relationship("Conversation", back_populates="user2", foreign_keys="Conversation.user2_id")
+    sent_applications = relationship("Application", back_populates="applicant", foreign_keys="Application.applicant_id")
+    received_applications = relationship("Application", back_populates="receiver", foreign_keys="Application.receiver_id")

@@ -23,3 +23,9 @@ class MessageType(enum.Enum):
     TEXT = "text"
     IMAGE = "image"
     FILE = "file"
+
+class ApplicationStatus(enum.Enum):
+    WAITING = "waiting"
+    REJECT = "reject"
+    ACCEPT = "accept"
+    

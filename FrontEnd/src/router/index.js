@@ -6,6 +6,8 @@ import Register from '../views/Register.vue'
 import Profile from '../views/Profile.vue'
 import CreateRecruitment from '../views/CreateRecruitment.vue'
 import RecruitmentDetail from '../views/RecruitmentDetail.vue'
+import Messages from '../views/Messages.vue'
+import Teams from '../views/Teams.vue'
 import { tokenManager } from '../api'
 
 const routes = [
@@ -56,6 +58,18 @@ const routes = [
     name: 'EditRecruitment',
     component: CreateRecruitment,
     meta: { title: '编辑招募 - TeaMAKE', requiresAuth: true }
+  },
+  {
+    path: '/messages',
+    name: 'Messages',
+    component: Messages,
+    meta: { title: '消息中心 - TeaMAKE', requiresAuth: true }
+  },
+  {
+    path: '/teams',
+    name: 'Teams',
+    component: Teams,
+    meta: { title: '我的队伍 - TeaMAKE', requiresAuth: true }
   }
 ]
 

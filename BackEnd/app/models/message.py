@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey, Bool
 from datetime import datetime, timezone
 from app.core.database import Base
 from sqlalchemy.orm import relationship
-from app.models.enums import MessageType
+from app.models.enums import MessageType, ApplicationStatus
 
 
 class Conversation(Base):
@@ -48,3 +48,21 @@ class Message(Base):
     # 关系
     conversation = relationship("Conversation", back_populates="messages")
     sender = relationship("User")
+
+class Application(Base):
+    """组队申请"""
+    __tablename__ = "application"
+
+    id = Column(Integer, primary_key=True, index=True)
+    recruitment_id = Column(Integer, ForeignKey("recruitment.id"), index=True)
+    applicant_id = Column(Integer, ForeignKey("user.id"), index=True)  # 申请人
+    receiver_id = Column(Integer, ForeignKey("user.id"), index=True)   # 接收者（通常是招募发起人）
+
+    status = Column(String, default=ApplicationStatus.WAITING.value)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # 关系（使用 foreign_keys 明确指定外键）
+    applicant = relationship("User", foreign_keys=[applicant_id], back_populates="sent_applications")
+    receiver = relationship("User", foreign_keys=[receiver_id], back_populates="received_applications")
+    recruitment = relationship("Recruitment", back_populates="applications")
+    
