@@ -1,44 +1,54 @@
 <template>
-  <div class="min-h-screen" :class="{ 'dark': isDark }">
+  <div class="min-h-screen zen-bg" :class="{ 'dark': isDark }">
     <!-- 顶部导航 -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-cyber-dark border-b border-light-border dark:border-dark-border">
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-glass">
       <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-        <router-link to="/square" class="text-lg font-bold text-cyber-primary">TeaMAKE</router-link>
-        <div class="flex items-center gap-4">
-          <button @click="toggleTheme" class="p-2 text-gray-500 dark:text-gray-400 hover:text-cyber-primary transition-colors">
-            <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <router-link to="/square" class="flex items-center gap-2 group">
+          <div class="relative">
+            <div class="absolute inset-0 bg-tea-500/30 rounded-zen-lg blur-md animate-pulse-soft"></div>
+            <div class="relative w-9 h-9 rounded-zen-lg bg-gradient-to-br from-tea-500 to-tea-600 flex items-center justify-center shadow-tea-md group-hover:shadow-tea-glow transition-all">
+              <span class="text-white font-bold">茶</span>
+            </div>
+          </div>
+          <span class="text-lg font-bold text-gradient-tea">TeaMAKE</span>
+        </router-link>
+        <div class="flex items-center gap-3">
+          <button @click="toggleTheme" class="p-2 rounded-zen-full bg-tea-50 dark:bg-cyber-darkGray hover:bg-tea-100 dark:hover:bg-cyber-darkBorder transition-all">
+            <svg v-if="isDark" class="w-5 h-5 text-cyber-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
             </svg>
-            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg v-else class="w-5 h-5 text-tea-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 0 008.354-5.646z"/>
             </svg>
           </button>
-          <router-link to="/square" class="text-sm text-gray-500 dark:text-gray-400 hover:text-cyber-primary transition-colors">返回广场</router-link>
+          <router-link to="/square" class="px-4 py-2 rounded-zen-full text-sm text-gray-500 dark:text-gray-400 hover:text-tea-500 dark:hover:text-tea-light transition-colors">
+            返回广场
+          </router-link>
         </div>
       </div>
     </nav>
 
     <!-- 页面标题 -->
-    <div class="pt-20 pb-6 bg-light-lighter dark:bg-cyber-darker/50 border-b border-light-border dark:border-dark-border">
-      <div class="max-w-4xl mx-auto px-4">
-        <h1 class="text-2xl font-bold text-cyber-dark dark:text-white">消息中心</h1>
+    <div class="pt-24 pb-4 px-4 bg-white/50 dark:bg-cyber-dark/50 backdrop-blur-sm border-b border-tea-200/30 dark:border-cyber-darkBorder/30">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">消息中心</h1>
       </div>
     </div>
 
     <!-- 标签页 -->
-    <div class="bg-light-lighter dark:bg-cyber-darker/30 border-b border-light-border dark:border-dark-border">
+    <div class="bg-white/30 dark:bg-cyber-dark/30 backdrop-blur-sm border-b border-tea-200/30 dark:border-cyber-darkBorder/30">
       <div class="max-w-4xl mx-auto px-4">
-        <div class="flex gap-2">
+        <div class="tabs-nav">
           <button
             @click="activeTab = 'received'"
-            :class="['px-6 py-3 text-sm font-medium transition-all border-b-2', activeTab === 'received' ? 'border-cyber-primary text-cyber-primary' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300']"
+            :class="['tab-item', { 'active': activeTab === 'received' }]"
           >
             收到的申请
-            <span v-if="unreadCount > 0" class="ml-2 px-2 py-0.5 bg-red-500 text-white text-xs rounded-full">{{ unreadCount }}</span>
+            <span v-if="unreadCount > 0" class="ml-2 badge">{{ unreadCount }}</span>
           </button>
           <button
             @click="activeTab = 'sent'"
-            :class="['px-6 py-3 text-sm font-medium transition-all border-b-2', activeTab === 'sent' ? 'border-cyber-primary text-cyber-primary' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300']"
+            :class="['tab-item', { 'active': activeTab === 'sent' }]"
           >
             发出的申请
           </button>
@@ -50,29 +60,40 @@
     <div class="max-w-4xl mx-auto px-4 py-6">
       <!-- 加载状态 -->
       <div v-if="loading" class="flex justify-center py-20">
-        <div class="w-10 h-10 border-3 border-cyber-primary/30 border-t-cyber-primary animate-spin"></div>
+        <div class="relative">
+          <div class="w-16 h-16 rounded-full border-4 border-tea-200 dark:border-cyber-darkGray border-t-tea-500 animate-spin"></div>
+        </div>
       </div>
 
       <!-- 空状态 -->
-      <div v-else-if="applications.length === 0" class="sharp-card p-12 text-center">
-        <svg class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
-        </svg>
-        <p class="text-gray-500 dark:text-gray-400 mb-4">{{ activeTab === 'received' ? '暂无收到的申请' : '暂无发出的申请' }}</p>
+      <div v-else-if="applications.length === 0" class="zen-card p-12 text-center">
+        <div class="empty-state-icon mx-auto">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+          </svg>
+        </div>
+        <h3 class="empty-state-title">{{ activeTab === 'received' ? '暂无收到的申请' : '暂无发出的申请' }}</h3>
+        <p class="empty-state-desc">{{ activeTab === 'received' ? '等待其他用户向你提交申请' : '去广场看看感兴趣的招募吧' }}</p>
+        <router-link v-if="activeTab === 'sent'" to="/square" class="btn-primary inline-flex items-center gap-2 mt-6">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          浏览招募
+        </router-link>
       </div>
 
       <!-- 申请卡片列表 -->
-      <div v-else class="space-y-4">
+      <div v-else class="space-y-4 stagger-animation">
         <div
           v-for="app in applications"
           :key="app.id"
-          class="sharp-card p-5 hover:border-cyber-primary/50 transition-all"
+          class="zen-card p-5 hover:shadow-tea-md transition-all"
         >
           <div class="flex gap-4">
             <!-- 左侧用户信息 -->
-            <router-link :to="`/profile/${activeTab === 'received' ? app.applicant_id : app.receiver_id}`" class="flex-shrink-0 flex flex-col items-center">
-              <div class="w-12 h-12 bg-cyber-primary/10 border border-cyber-primary/30 flex items-center justify-center overflow-hidden">
-                <span class="text-cyber-primary font-bold">{{ (activeTab === 'received' ? app.applicant_name : app.receiver_name)?.charAt(0) }}</span>
+            <router-link :to="`/profile/${activeTab === 'received' ? app.applicant_id : app.receiver_id}`" class="flex-shrink-0 flex flex-col items-center group">
+              <div class="w-14 h-14 rounded-zen-xl bg-gradient-to-br from-tea-400 to-tea-500 flex items-center justify-center shadow-tea-md group-hover:shadow-tea-glow transition-all">
+                <span class="text-white font-bold text-lg">{{ (activeTab === 'received' ? app.applicant_name : app.receiver_name)?.charAt(0) }}</span>
               </div>
             </router-link>
 
@@ -80,18 +101,18 @@
             <div class="flex-1 min-w-0">
               <div class="flex items-start justify-between gap-4">
                 <div class="min-w-0">
-                  <h3 class="text-lg font-semibold text-cyber-dark dark:text-white">
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                     {{ activeTab === 'received' ? `${app.applicant_name} 申请加入` : `申请 ${app.receiver_name}` }}
                   </h3>
-                  <p class="text-sm text-cyber-accent mt-1">{{ app.recruitment_title }}</p>
+                  <p class="text-sm text-gradient-cyber mt-1 font-medium">{{ app.recruitment_title }}</p>
                 </div>
-                <span :class="['px-2 py-0.5 text-xs font-medium border', statusClass(app.status)]">
+                <span :class="['tag-status', statusClass(app.status)]">
                   {{ statusText(app.status) }}
                 </span>
               </div>
 
               <!-- 时间 -->
-              <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              <p class="text-xs text-gray-400 dark:text-gray-500 mt-3">
                 {{ formatDateTime(app.created_at) }}
               </p>
 
@@ -99,14 +120,20 @@
               <div v-if="activeTab === 'received' && app.status === 'waiting'" class="flex gap-3 mt-4">
                 <button
                   @click="respondApplication(app.id, true)"
-                  class="px-4 py-2 bg-cyber-primary/10 text-cyber-primary border border-cyber-primary/30 hover:bg-cyber-primary/20 transition-colors text-sm"
+                  class="btn-primary flex-1 flex items-center justify-center gap-2 py-2.5"
                 >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
                   接受
                 </button>
                 <button
                   @click="respondApplication(app.id, false)"
-                  class="px-4 py-2 bg-gray-100 dark:bg-cyber-darkGray text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm"
+                  class="btn-secondary flex-1 flex items-center justify-center gap-2 py-2.5"
                 >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
                   拒绝
                 </button>
               </div>
@@ -119,7 +146,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { applicationAPI } from '../api'
 
@@ -147,11 +174,11 @@ function updateTheme() {
 
 function statusClass(status) {
   const classes = {
-    'waiting': 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-500 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800',
-    'accept': 'bg-green-50 dark:bg-green-900/20 text-green-500 dark:text-green-400 border-green-200 dark:border-green-800',
-    'reject': 'bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 border-red-200 dark:border-red-800'
+    'waiting': 'waiting',
+    'accept': 'accept',
+    'reject': 'reject'
   }
-  return classes[status] || 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700'
+  return classes[status] || 'draft'
 }
 
 function statusText(status) {
@@ -203,7 +230,6 @@ async function respondApplication(applicationId, accept) {
 
     if (accept) {
       alert('已接受申请！对方已加入队伍。')
-      // 跳转到招募详情查看队伍
       const app = applications.value.find(a => a.id === applicationId)
       if (app) {
         router.push(`/recruitment/${app.recruitment_id}`)
@@ -213,7 +239,6 @@ async function respondApplication(applicationId, accept) {
       alert('已拒绝申请')
     }
 
-    // 刷新列表
     await loadApplications()
     await loadUnreadCount()
   } catch (err) {

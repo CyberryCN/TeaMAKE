@@ -1,83 +1,107 @@
 <template>
-  <div class="min-h-screen" :class="{ 'dark': isDark }">
+  <div class="min-h-screen zen-bg" :class="{ 'dark': isDark }">
     <!-- 顶部导航 -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-cyber-dark border-b border-light-border dark:border-dark-border">
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-glass">
       <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        <router-link to="/square" class="text-lg font-bold text-cyber-primary">TeaMAKE</router-link>
-        <div class="flex items-center gap-4">
-          <button @click="toggleTheme" class="p-2 text-gray-500 dark:text-gray-400 hover:text-cyber-primary transition-colors">
-            <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Logo -->
+        <router-link to="/square" class="flex items-center gap-2 group">
+          <div class="relative">
+            <div class="absolute inset-0 bg-tea-500/30 rounded-zen-lg blur-md animate-pulse-soft"></div>
+            <div class="relative w-10 h-10 rounded-zen-lg bg-gradient-to-br from-tea-500 to-tea-600 flex items-center justify-center shadow-tea-md group-hover:shadow-tea-glow transition-all">
+              <span class="text-white font-bold text-lg">茶</span>
+            </div>
+          </div>
+          <span class="text-xl font-bold text-gradient-tea">TeaMAKE</span>
+        </router-link>
+
+        <!-- 右侧操作区 -->
+        <div class="flex items-center gap-3">
+          <!-- 主题切换 -->
+          <button @click="toggleTheme" class="p-2.5 rounded-zen-full bg-tea-50 dark:bg-cyber-darkGray hover:bg-tea-100 dark:hover:bg-cyber-darkBorder transition-all group">
+            <svg v-if="isDark" class="w-5 h-5 text-cyber-blue group-hover:text-cyber-blueGlow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
             </svg>
-            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            <svg v-else class="w-5 h-5 text-tea-500 group-hover:text-tea-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 0 008.354-5.646z"/>
             </svg>
           </button>
+
           <!-- 消息入口 -->
-          <router-link to="/messages" class="relative p-2 text-gray-500 dark:text-gray-400 hover:text-cyber-primary transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <router-link to="/messages" class="relative p-2.5 rounded-zen-full bg-tea-50 dark:bg-cyber-darkGray hover:bg-tea-100 dark:hover:bg-cyber-darkBorder transition-all group">
+            <svg class="w-5 h-5 text-tea-500 dark:text-cyber-blue group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
             </svg>
-            <span v-if="unreadCount > 0" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+            <span v-if="unreadCount > 0" class="absolute -top-1 -right-1 w-5 h-5 rounded-zen-full bg-gradient-to-r from-red-400 to-red-500 text-white text-xs font-bold flex items-center justify-center shadow-lg animate-pulse">
               {{ unreadCount > 9 ? '9+' : unreadCount }}
             </span>
           </router-link>
+
           <!-- 队伍入口 -->
-          <router-link to="/teams" class="p-2 text-gray-500 dark:text-gray-400 hover:text-cyber-primary transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <router-link to="/teams" class="p-2.5 rounded-zen-full bg-tea-50 dark:bg-cyber-darkGray hover:bg-tea-100 dark:hover:bg-cyber-darkBorder transition-all group">
+            <svg class="w-5 h-5 text-tea-500 dark:text-cyber-blue group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
           </router-link>
-          <router-link to="/create" class="btn-primary text-sm px-4 py-2 flex items-center gap-1">
+
+          <!-- 发布招募按钮 -->
+          <router-link to="/create" class="btn-primary flex items-center gap-1.5">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
-            发布招募
+            <span class="text-sm">发布招募</span>
           </router-link>
+
+          <!-- 用户菜单 -->
           <template v-if="currentUser">
-            <router-link :to="`/profile/${currentUser.id}`" class="flex items-center gap-2">
-              <div class="w-8 h-8 bg-cyber-primary/10 border border-cyber-primary/30 flex items-center justify-center overflow-hidden">
-                <span class="text-sm text-cyber-primary font-medium">{{ currentUser.username?.charAt(0) }}</span>
+            <router-link :to="`/profile/${currentUser.id}`" class="flex items-center gap-2 px-3 py-1.5 rounded-zen-full bg-tea-50 dark:bg-cyber-darkGray hover:bg-tea-100 dark:hover:bg-cyber-darkBorder transition-all">
+              <div class="w-8 h-8 rounded-zen-full bg-gradient-to-br from-tea-400 to-tea-500 flex items-center justify-center">
+                <span class="text-white text-sm font-medium">{{ currentUser.username?.charAt(0) }}</span>
               </div>
-              <span class="text-sm text-gray-600 dark:text-gray-300">{{ currentUser.username }}</span>
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-200">{{ currentUser.username }}</span>
             </router-link>
-            <button @click="logout" class="text-sm text-gray-500 dark:text-gray-400 hover:text-cyber-primary transition-colors">退出</button>
+            <button @click="logout" class="px-3 py-1.5 rounded-zen-full text-sm text-gray-500 dark:text-gray-400 hover:text-tea-500 dark:hover:text-tea-light transition-colors">
+              退出
+            </button>
           </template>
           <template v-else>
-            <router-link to="/login" class="text-sm text-gray-500 dark:text-gray-400 hover:text-cyber-primary transition-colors">登录</router-link>
+            <router-link to="/login" class="px-4 py-2 rounded-zen-full text-sm font-medium text-tea-500 dark:text-cyber-blue hover:bg-tea-50 dark:hover:bg-cyber-darkGray transition-all">
+              登录
+            </router-link>
           </template>
         </div>
       </div>
     </nav>
 
     <!-- 搜索区域 -->
-    <div class="pt-20 pb-6 border-b border-light-border dark:border-dark-border bg-light-lighter dark:bg-cyber-darker/50">
-      <div class="max-w-4xl mx-auto px-4">
-        <div class="flex gap-4">
-          <div class="flex-1 relative">
-            <input
-              v-model="searchKeyword"
-              type="text"
-              placeholder="搜索竞赛名称..."
-              class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border rounded text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-cyber-primary/50 transition-colors"
-              @keyup.enter="handleSearch"
-            />
-            <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-          </div>
-          <button @click="handleSearch" class="btn-primary px-6">搜索</button>
+    <div class="pt-24 pb-6 px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="relative group">
+          <div class="absolute -inset-1 bg-gradient-to-r from-tea-500 to-cyber-blue opacity-0 group-hover:opacity-20 rounded-zen-xl transition-opacity duration-300"></div>
+          <input
+            v-model="searchKeyword"
+            type="text"
+            placeholder="搜索竞赛名称或技能..."
+            class="zen-input pl-12 pr-20 text-lg relative"
+            @keyup.enter="handleSearch"
+          />
+          <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-tea-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <button @click="handleSearch" class="absolute right-2 top-1/2 -translate-y-1/2 btn-primary px-4 py-2 text-sm">
+            搜索
+          </button>
         </div>
       </div>
     </div>
 
     <!-- 分类标签 -->
-    <div class="bg-light-lighter dark:bg-cyber-darker/30 border-b border-light-border dark:border-dark-border">
-      <div class="max-w-4xl mx-auto px-4 py-4">
-        <div class="flex gap-2 overflow-x-auto pb-2">
+    <div class="px-4 pb-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
           <button
             @click="activeCategory = ''"
-            :class="['px-4 py-1.5 text-sm whitespace-nowrap transition-all border', !activeCategory ? 'bg-cyber-primary text-white border-cyber-primary' : 'bg-white dark:bg-cyber-dark border-light-border dark:border-dark-border text-gray-600 dark:text-gray-400 hover:border-cyber-primary/50']"
+            class="tag-category"
+            :class="{ 'active': !activeCategory }"
           >
             全部
           </button>
@@ -85,7 +109,8 @@
             v-for="cat in categories"
             :key="cat"
             @click="activeCategory = cat"
-            :class="['px-4 py-1.5 text-sm whitespace-nowrap transition-all border', activeCategory === cat ? 'bg-cyber-primary text-white border-cyber-primary' : 'bg-white dark:bg-cyber-dark border-light-border dark:border-dark-border text-gray-600 dark:text-gray-400 hover:border-cyber-primary/50']"
+            class="tag-category"
+            :class="{ 'active': activeCategory === cat }"
           >
             {{ cat }}
           </button>
@@ -94,84 +119,97 @@
     </div>
 
     <!-- 招募列表 -->
-    <div class="max-w-4xl mx-auto px-4 py-4">
+    <div class="max-w-4xl mx-auto px-4 pb-12">
       <!-- 加载状态 -->
       <div v-if="loading" class="flex justify-center py-20">
-        <div class="w-10 h-10 border-3 border-cyber-primary/30 border-t-cyber-primary animate-spin"></div>
+        <div class="relative">
+          <div class="w-16 h-16 rounded-full border-4 border-tea-200 dark:border-cyber-darkGray border-t-tea-500 animate-spin"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-tea-500 text-xs font-medium">加载中...</span>
+          </div>
+        </div>
       </div>
 
       <!-- 空状态 -->
-      <div v-else-if="recruitments.length === 0" class="sharp-card p-12 text-center">
-        <svg class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        <p class="text-gray-500 dark:text-gray-400 mb-4">暂无招募信息</p>
-        <router-link to="/create" class="btn-primary inline-block">发布招募</router-link>
+      <div v-else-if="recruitments.length === 0" class="zen-card p-12 text-center">
+        <div class="empty-state-icon mx-auto">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <h3 class="empty-state-title">暂无招募信息</h3>
+        <p class="empty-state-desc">成为第一个发起招募的人吧！</p>
+        <router-link to="/create" class="btn-primary inline-flex items-center gap-2 mt-6">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          发布招募
+        </router-link>
       </div>
 
       <!-- 招募卡片列表 -->
-      <div v-else class="space-y-4">
+      <div v-else class="space-y-4 stagger-animation">
         <div
           v-for="item in recruitments"
           :key="item.id"
           @click="goToDetail(item.id)"
-          class="sharp-card p-5 cursor-pointer hover:border-cyber-primary/50 transition-all group"
+          class="zen-card p-5 cursor-pointer group"
         >
           <div class="flex gap-4">
             <!-- 左侧用户信息 -->
             <div class="flex-shrink-0 flex flex-col items-center">
-              <div class="w-12 h-12 bg-cyber-primary/10 border border-cyber-primary/30 flex items-center justify-center overflow-hidden">
-                <span class="text-cyber-primary font-bold">{{ item.creator_name?.charAt(0) }}</span>
+              <div class="w-14 h-14 rounded-zen-xl bg-gradient-to-br from-tea-400 to-tea-500 flex items-center justify-center shadow-tea-md group-hover:shadow-tea-glow transition-all">
+                <span class="text-white font-bold text-lg">{{ item.creator_name?.charAt(0) }}</span>
               </div>
-              <span class="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate max-w-[60px]">{{ item.creator_name }}</span>
+              <span class="text-xs text-gray-500 dark:text-gray-400 mt-2 truncate max-w-[70px]">{{ item.creator_name }}</span>
             </div>
 
             <!-- 右侧内容 -->
             <div class="flex-1 min-w-0">
               <div class="flex items-start justify-between gap-4">
                 <div class="min-w-0">
-                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-cyber-primary transition-colors truncate">
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-tea-500 dark:group-hover:text-tea-light transition-colors truncate">
                     {{ item.title }}
                   </h3>
-                  <p class="text-sm text-cyber-accent mt-1">{{ item.competition_name }}</p>
+                  <p class="text-sm text-gradient-cyber mt-1 font-medium">{{ item.competition_name }}</p>
                 </div>
-                <span :class="['px-2 py-0.5 text-xs font-medium border', statusClass(item.status)]">
+                <span :class="['tag-status', statusClass(item.status)]">
                   {{ statusText(item.status) }}
                 </span>
               </div>
 
-              <p class="text-gray-500 dark:text-gray-400 text-sm mt-2 line-clamp-2">{{ item.description }}</p>
+              <p class="text-gray-500 dark:text-gray-400 text-sm mt-3 line-clamp-2">{{ item.description }}</p>
 
               <!-- 技能标签 -->
-              <div v-if="item.required_skills?.length" class="flex flex-wrap gap-1.5 mt-3">
+              <div v-if="item.required_skills?.length" class="flex flex-wrap gap-2 mt-4">
                 <span
-                  v-for="skill in item.required_skills.slice(0, 4)"
+                  v-for="skill in item.required_skills.slice(0, 5)"
                   :key="skill.id"
-                  class="px-2 py-0.5 bg-cyber-primary/10 text-cyber-primary text-xs border border-cyber-primary/20"
+                  class="tag-skill"
                 >
                   {{ skill.name }}
                 </span>
-                <span v-if="item.required_skills.length > 4" class="px-2 py-0.5 bg-gray-100 dark:bg-cyber-darkGray text-gray-500 dark:text-gray-400 text-xs">
-                  +{{ item.required_skills.length - 4 }}
+                <span v-if="item.required_skills.length > 5" class="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-cyber-darkGray text-gray-500 dark:text-gray-400">
+                  +{{ item.required_skills.length - 5 }}
                 </span>
               </div>
 
               <!-- 底部信息 -->
-              <div class="flex items-center gap-4 mt-3 text-xs text-gray-500 dark:text-gray-400">
-                <span class="flex items-center gap-1">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="flex items-center gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-cyber-darkBorder/50">
+                <span class="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                   </svg>
-                  招募 {{ item.required_number }} 人
+                  <span class="font-medium">{{ item.current_number || 1 }}/{{ item.required_number }} 人</span>
                 </span>
-                <span v-if="item.deadline" class="flex items-center gap-1">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span v-if="item.deadline" class="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                   截止 {{ formatDate(item.deadline) }}
                 </span>
-                <span class="flex items-center gap-1">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span class="flex items-center gap-1.5 text-sm text-gray-400 dark:text-gray-500 ml-auto">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                   {{ formatDate(item.created_at) }}
@@ -187,17 +225,17 @@
         <button
           @click="changePage(page - 1)"
           :disabled="page <= 1"
-          class="px-4 py-2 border border-light-border dark:border-dark-border bg-white dark:bg-cyber-dark text-gray-700 dark:text-gray-300 hover:border-cyber-primary/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
+          class="px-5 py-2 rounded-zen-full border border-gray-200 dark:border-cyber-darkBorder bg-white dark:bg-cyber-darkGray text-gray-700 dark:text-gray-300 hover:border-tea-400 dark:hover:border-tea-light disabled:opacity-40 disabled:cursor-not-allowed transition-all"
         >
           上一页
         </button>
-        <span class="px-4 py-2 text-gray-500 dark:text-gray-400 text-sm">
+        <span class="px-4 py-2 text-gray-500 dark:text-gray-400">
           {{ page }} / {{ totalPages }}
         </span>
         <button
           @click="changePage(page + 1)"
           :disabled="page >= totalPages"
-          class="px-4 py-2 border border-light-border dark:border-dark-border bg-white dark:bg-cyber-dark text-gray-700 dark:text-gray-300 hover:border-cyber-primary/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm"
+          class="px-5 py-2 rounded-zen-full border border-gray-200 dark:border-cyber-darkBorder bg-white dark:bg-cyber-darkGray text-gray-700 dark:text-gray-300 hover:border-tea-400 dark:hover:border-tea-light disabled:opacity-40 disabled:cursor-not-allowed transition-all"
         >
           下一页
         </button>
@@ -247,19 +285,17 @@ function updateTheme() {
   }
 }
 
-// 模拟分类数据
 const categories = ref(['数学建模', '程序设计', '机械设计', '商业方案', '创新创业'])
-
 const totalPages = computed(() => Math.ceil(total.value / pageSize.value))
 
 function statusClass(status) {
   const classes = {
-    'open': 'bg-cyber-primary/10 text-cyber-primary border-cyber-primary/20',
-    'draft': 'bg-gray-100 dark:bg-cyber-darkGray text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700',
-    'closed': 'bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 border-red-200 dark:border-red-800',
-    'completed': 'bg-cyber-secondary/10 text-cyber-secondary border-cyber-secondary/20'
+    'open': 'open',
+    'draft': 'draft',
+    'closed': 'closed',
+    'completed': 'completed'
   }
-  return classes[status] || 'bg-gray-100 dark:bg-cyber-darkGray text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700'
+  return classes[status] || 'draft'
 }
 
 function statusText(status) {
@@ -320,7 +356,6 @@ function logout() {
 }
 
 onMounted(() => {
-  // 初始化主题
   const savedTheme = localStorage.getItem('theme')
   if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     isDark.value = true
@@ -339,5 +374,14 @@ onMounted(() => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>

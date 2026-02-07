@@ -1,97 +1,109 @@
 <template>
-  <div class="min-h-screen" :class="{ 'dark': isDark }">
+  <div class="min-h-screen zen-bg" :class="{ 'dark': isDark }">
     <!-- 顶部导航 -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-cyber-dark border-b border-light-border dark:border-dark-border">
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-glass">
       <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-        <router-link to="/square" class="text-lg font-bold text-cyber-primary">TeaMAKE</router-link>
-        <router-link to="/square" class="text-sm text-gray-500 dark:text-gray-400 hover:text-cyber-primary transition-colors">返回广场</router-link>
+        <router-link to="/square" class="flex items-center gap-2 group">
+          <div class="relative">
+            <div class="absolute inset-0 bg-tea-500/30 rounded-zen-lg blur-md animate-pulse-soft"></div>
+            <div class="relative w-9 h-9 rounded-zen-lg bg-gradient-to-br from-tea-500 to-tea-600 flex items-center justify-center shadow-tea-md group-hover:shadow-tea-glow transition-all">
+              <span class="text-white font-bold">茶</span>
+            </div>
+          </div>
+          <span class="text-lg font-bold text-gradient-tea">TeaMAKE</span>
+        </router-link>
+        <router-link to="/square" class="px-4 py-2 rounded-zen-full text-sm text-gray-500 dark:text-gray-400 hover:text-tea-500 dark:hover:text-tea-light transition-colors">
+          返回广场
+        </router-link>
       </div>
     </nav>
 
     <div class="pt-20 pb-12">
       <div class="max-w-2xl mx-auto px-4">
         <!-- 标题 -->
-        <div class="mb-8">
-          <h1 class="text-2xl font-bold text-cyber-dark dark:text-white">发布招募</h1>
-          <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">填写招募信息，找到合适的队友</p>
+        <div class="mb-8 animate-fade-in">
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ isEditing ? '编辑招募' : '发布招募' }}</h1>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">{{ isEditing ? '修改招募信息' : '填写招募信息，找到合适的队友' }}</p>
         </div>
 
         <!-- 表单 -->
         <form @submit.prevent="handleSubmit" class="space-y-6">
           <!-- 基本信息 -->
-          <div class="sharp-card p-6 space-y-4">
-            <h2 class="text-lg font-semibold text-cyber-dark dark:text-white flex items-center gap-2">
-              <span class="w-1 h-5 bg-cyber-primary"></span>
+          <div class="zen-card p-6 space-y-4 animate-slide-up">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="w-1 h-5 rounded-full bg-gradient-to-b from-tea-500 to-tea-400"></span>
               基本信息
             </h2>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                招募标题 <span class="text-cyber-primary">*</span>
+            <div class="group">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors group-focus-within:text-tea-500">
+                招募标题 <span class="text-tea-500">*</span>
               </label>
               <input
                 v-model="form.title"
                 type="text"
-                class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
+                class="zen-input"
                 placeholder="例如：招募数学建模队友"
                 required
                 maxlength="200"
               />
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                目标竞赛 <span class="text-cyber-primary">*</span>
+            <div class="group">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors group-focus-within:text-tea-500">
+                目标竞赛 <span class="text-tea-500">*</span>
               </label>
               <input
                 v-model="form.competition_name"
                 type="text"
-                class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
+                class="zen-input"
                 placeholder="例如：全国大学生数学建模竞赛"
                 required
               />
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">竞赛链接</label>
+            <div class="group">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors group-focus-within:text-tea-500">
+                竞赛链接
+              </label>
               <input
                 v-model="form.competition_url"
                 type="url"
-                class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
+                class="zen-input"
                 placeholder="竞赛官网链接（可选）"
               />
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                招募人数 <span class="text-cyber-primary">*</span>
+            <div class="group">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors group-focus-within:text-tea-500">
+                招募人数 <span class="text-tea-500">*</span>
               </label>
               <input
                 v-model.number="form.required_number"
                 type="number"
                 min="1"
                 max="20"
-                class="w-32 px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
+                class="zen-input w-32"
                 required
               />
             </div>
           </div>
 
           <!-- 详细内容 -->
-          <div class="sharp-card p-6 space-y-4">
-            <h2 class="text-lg font-semibold text-cyber-dark dark:text-white flex items-center gap-2">
-              <span class="w-1 h-5 bg-cyber-secondary"></span>
+          <div class="zen-card p-6 space-y-4 animate-slide-up animate-delay-100">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="w-1 h-5 rounded-full bg-gradient-to-b from-cyber-blue to-tea-400"></span>
               详细内容
             </h2>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                详细描述 <span class="text-cyber-primary">*</span>
+            <div class="group">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors group-focus-within:text-tea-500">
+                详细描述 <span class="text-tea-500">*</span>
               </label>
               <textarea
                 v-model="form.description"
                 rows="5"
-                class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors resize-none"
+                class="zen-input resize-none"
                 placeholder="详细介绍你的招募需求，包括：&#10;- 项目背景&#10;- 需要的技能&#10;- 时间安排&#10;- 期望的目标"
                 required
               ></textarea>
@@ -99,54 +111,54 @@
           </div>
 
           <!-- 时间安排 -->
-          <div class="sharp-card p-6 space-y-4">
-            <h2 class="text-lg font-semibold text-cyber-dark dark:text-white flex items-center gap-2">
-              <span class="w-1 h-5 bg-cyber-accent"></span>
+          <div class="zen-card p-6 space-y-4 animate-slide-up animate-delay-200">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="w-1 h-5 rounded-full bg-gradient-to-b from-cyber-green to-tea-500"></span>
               时间安排
             </h2>
 
             <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  招募截止 <span class="text-cyber-primary">*</span>
+              <div class="group">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors group-focus-within:text-tea-500">
+                  招募截止 <span class="text-tea-500">*</span>
                 </label>
                 <input
                   v-model="form.deadline"
                   type="datetime-local"
-                  class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
+                  class="zen-input"
                   required
                 />
               </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  预计开始 <span class="text-cyber-primary">*</span>
+              <div class="group">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors group-focus-within:text-tea-500">
+                  预计开始 <span class="text-tea-500">*</span>
                 </label>
                 <input
                   v-model="form.expected_start"
                   type="datetime-local"
-                  class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
+                  class="zen-input"
                   required
                 />
               </div>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                预计结束 <span class="text-cyber-primary">*</span>
+            <div class="group">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors group-focus-within:text-tea-500">
+                预计结束 <span class="text-tea-500">*</span>
               </label>
               <input
                 v-model="form.expected_end"
                 type="datetime-local"
-                class="w-full px-4 py-2.5 bg-white dark:bg-cyber-darkGray border border-light-border dark:border-dark-border text-gray-900 dark:text-white focus:outline-none focus:border-cyber-primary/50 transition-colors"
+                class="zen-input"
                 required
               />
             </div>
           </div>
 
           <!-- 技能要求 -->
-          <div class="sharp-card p-6 space-y-4">
-            <h2 class="text-lg font-semibold text-cyber-dark dark:text-white flex items-center gap-2">
-              <span class="w-1 h-5 bg-gradient-to-b from-cyber-primary to-cyber-secondary"></span>
+          <div class="zen-card p-6 space-y-4 animate-slide-up animate-delay-300">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <span class="w-1 h-5 rounded-full bg-gradient-to-b from-cyber-accent to-tea-500"></span>
               技能要求
             </h2>
 
@@ -154,7 +166,7 @@
               <button
                 type="button"
                 @click="selectedCategory = ''"
-                :class="['px-3 py-1.5 text-sm transition-all border', !selectedCategory ? 'bg-cyber-primary text-white border-cyber-primary' : 'bg-white dark:bg-cyber-dark border-light-border dark:border-dark-border text-gray-600 dark:text-gray-400']"
+                :class="['tag-category', { 'active': !selectedCategory }]"
               >
                 全部
               </button>
@@ -163,7 +175,7 @@
                 v-for="cat in categories"
                 :key="cat.name"
                 @click="selectedCategory = cat.name"
-                :class="['px-3 py-1.5 text-sm transition-all border', selectedCategory === cat.name ? 'bg-cyber-primary text-white border-cyber-primary' : 'bg-white dark:bg-cyber-dark border-light-border dark:border-dark-border text-gray-600 dark:text-gray-400']"
+                :class="['tag-category', { 'active': selectedCategory === cat.name }]"
               >
                 {{ cat.name }}
               </button>
@@ -176,10 +188,8 @@
                 :key="skill.id"
                 @click="toggleSkill(skill.id)"
                 :class="[
-                  'px-3 py-1.5 text-sm transition-all border',
-                  selectedSkillIds.includes(skill.id)
-                    ? 'bg-cyber-primary text-white border-cyber-primary'
-                    : 'bg-white dark:bg-cyber-dark border-light-border dark:border-dark-border text-gray-700 dark:text-gray-300 hover:border-cyber-primary/50'
+                  'tag-category',
+                  { 'active': selectedSkillIds.includes(skill.id) }
                 ]"
               >
                 {{ skill.name }}
@@ -189,7 +199,7 @@
           </div>
 
           <!-- 错误提示 -->
-          <div v-if="error" class="p-4 border bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-500 dark:text-red-400 text-sm">
+          <div v-if="error" class="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-500 dark:text-red-400 text-sm rounded-zen animate-fade-in">
             {{ error }}
           </div>
 
@@ -229,10 +239,11 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { recruitmentAPI, skillAPI } from '../api'
 
 const router = useRouter()
+const route = useRoute()
 
 const isDark = ref(false)
 const loading = ref(false)
@@ -240,6 +251,10 @@ const error = ref('')
 const categories = ref([])
 const selectedCategory = ref('')
 const selectedSkillIds = ref([])
+
+// 判断是否为编辑模式
+const isEditing = computed(() => !!route.params.id)
+const recruitmentId = computed(() => route.params.id ? parseInt(route.params.id) : null)
 
 function toggleTheme() {
   isDark.value = !isDark.value
@@ -303,23 +318,65 @@ async function loadSkills() {
   }
 }
 
+async function loadRecruitment() {
+  if (!isEditing.value) return
+
+  loading.value = true
+  try {
+    const data = await recruitmentAPI.getDetail(recruitmentId.value)
+    form.title = data.title || ''
+    form.description = data.description || ''
+    form.competition_name = data.competition_name || ''
+    form.competition_url = data.competition_url || ''
+    form.required_number = data.required_number || 1
+    form.required_skills = data.required_skills?.map(s => s.id) || []
+
+    // 转换日期格式
+    if (data.deadline) {
+      form.deadline = new Date(data.deadline).toISOString().slice(0, 16)
+    }
+    if (data.expected_start) {
+      form.expected_start = new Date(data.expected_start).toISOString().slice(0, 16)
+    }
+    if (data.expected_end) {
+      form.expected_end = new Date(data.expected_end).toISOString().slice(0, 16)
+    }
+
+    selectedSkillIds.value = data.required_skills?.map(s => s.id) || []
+  } catch (err) {
+    console.error('加载招募信息失败:', err)
+    error.value = '加载失败'
+  } finally {
+    loading.value = false
+  }
+}
+
 async function handleSubmit() {
   error.value = ''
   loading.value = true
 
   try {
     const data = {
-      ...form,
+      title: form.title,
+      description: form.description,
+      competition_name: form.competition_name,
+      competition_url: form.competition_url || null,
+      required_number: form.required_number,
       deadline: new Date(form.deadline).toISOString(),
       expected_start: new Date(form.expected_start).toISOString(),
       expected_end: new Date(form.expected_end).toISOString(),
       required_skills: selectedSkillIds.value
     }
 
-    const result = await recruitmentAPI.publish(data)
-    router.push(`/recruitment/${result.id}`)
+    if (isEditing.value) {
+      await recruitmentAPI.update(recruitmentId.value, data)
+      router.push(`/recruitment/${recruitmentId.value}`)
+    } else {
+      const result = await recruitmentAPI.publish(data)
+      router.push(`/recruitment/${result.id}`)
+    }
   } catch (err) {
-    error.value = err.message || '发布失败，请检查必填项'
+    error.value = err.message || (isEditing.value ? '更新失败' : '发布失败')
   } finally {
     loading.value = false
   }
@@ -342,22 +399,28 @@ async function saveDraft() {
       required_skills: selectedSkillIds.value
     }
 
-    const result = await recruitmentAPI.createDraft(data)
-    router.push(`/recruitment/${result.id}`)
+    if (isEditing.value) {
+      await recruitmentAPI.update(recruitmentId.value, data)
+      router.push(`/recruitment/${recruitmentId.value}`)
+    } else {
+      const result = await recruitmentAPI.createDraft(data)
+      router.push(`/recruitment/${result.id}`)
+    }
   } catch (err) {
-    error.value = err.message || '保存失败'
+    error.value = err.message || (isEditing.value ? '更新失败' : '保存失败')
   } finally {
     loading.value = false
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   const savedTheme = localStorage.getItem('theme')
   if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     isDark.value = true
   }
   updateTheme()
 
-  loadSkills()
+  await loadSkills()
+  await loadRecruitment()
 })
 </script>
